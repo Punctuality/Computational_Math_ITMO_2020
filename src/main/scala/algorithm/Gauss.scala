@@ -12,11 +12,8 @@ object Gauss {
       Right apply triangle.data.map{ row =>
         val shortenRow = row.dropWhile(_ == 0).toList
         shortenRow.map(_ / shortenRow.head)
-      }.reverse.map{a =>
-        println(a)
-        a
-      }.foldLeft(List.empty[Double]){
-        case (answers, row) => (row.last - (row.init.tail zip answers).map{ case (a, b) => a * b }.sum) +: answers
+      }.foldRight(List.empty[Double]){
+        case (row, answers) => (row.last - (row.init.tail zip answers).map{ case (a, b) => a * b }.sum) +: answers
       }.zipWithIndex.map(_.swap)
     }
   } else {
