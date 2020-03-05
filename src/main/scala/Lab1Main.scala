@@ -25,9 +25,9 @@ object Lab1Main extends App {
       println(s"Input file path:")
       retrievedMatrix set FileInput.doubleFile(new File(readLine())).produceMatrix
     case "3" =>
-      println(s"Input dimensions (rows cols):")
+      println(s"Input dimensions and max value (rows cols max_value):")
       readLine.split(' ').map(_.toInt).toList match {
-        case m :: n :: Nil => retrievedMatrix set RandomInput.doubleRandom(m, n).produceMatrix
+        case m :: n :: maxValue :: Nil => retrievedMatrix set RandomInput.intRandom(m, n, maxValue).produceMatrix.map(_.map(_.toDouble))
         case _             => ()
       }
     case _   => ()
@@ -37,6 +37,7 @@ object Lab1Main extends App {
     case Some(matrix) => Gauss.solveSystem(matrix) match {
       case Left(message) => println(message)
       case Right(answers) =>
+        println(s"For matrix:\n$matrix")
         println("Result:")
         answers.foreach{ case (pos, value) => println(s"x_${pos+1} = ${round(value * 100).toDouble / 100}")}
     }
