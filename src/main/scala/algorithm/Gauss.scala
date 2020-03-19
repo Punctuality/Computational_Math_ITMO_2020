@@ -6,6 +6,7 @@ import math.Implicits._
 object Gauss {
   def solveSystem(reprMatrix: Matrix[Double]): Either[String, List[(Int, Double)]] = if (reprMatrix.rows == reprMatrix.cols - 1) {
     val triangle = reprMatrix.triangulate
+    println(s"Triangulated matrix:\n$triangle")
     if (triangle.getDiagonal.product == 0) {
       if (triangle.data.exists(row => row.forall(_ == 0))){
         Left("System has infinite amount of  solutions")

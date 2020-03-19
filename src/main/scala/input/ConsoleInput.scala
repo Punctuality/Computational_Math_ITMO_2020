@@ -1,7 +1,9 @@
 package input
 import math.Matrix
 
-class ConsoleInput[A](parseFunc: String => A, sep: Char = ' ') extends MatrixInput[A] {
+import scala.reflect.ClassTag
+
+class ConsoleInput[A](parseFunc: String => A, sep: Char = ' ')(implicit tag: ClassTag[A]) extends MatrixInput[A] {
   private val reader = new StreamInput[A](parseFunc, sep, System.in)
   override def produceMatrix: Option[Matrix[A]] = {
     println(s"Input dimensions (rows cols), then (row by row) input matrix values (sep = '$sep'):")

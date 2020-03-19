@@ -1,13 +1,14 @@
 package input
 
-import java.io.{FileInputStream, InputStream}
+import java.io.InputStream
 import java.util.Scanner
 
 import math.{Matrix, MatrixDense}
 
+import scala.reflect.ClassTag
 import scala.util.Try
 
-class StreamInput[A](parseFunc: String => A, sep: Char, inputStream: InputStream) extends MatrixInput[A]{
+class StreamInput[A](parseFunc: String => A, sep: Char, inputStream: InputStream)(implicit tag: ClassTag[A]) extends MatrixInput[A]{
   val lineScanner = new Scanner(inputStream)
   override def produceMatrix: Option[Matrix[A]] = {
     Try(lineScanner.nextLine.split(' ').toList.map(_.toInt)).collect {

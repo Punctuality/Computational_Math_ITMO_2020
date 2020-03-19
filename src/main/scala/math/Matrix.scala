@@ -1,6 +1,12 @@
 package math
 
+import java.io.ByteArrayInputStream
+
+import input.StreamInput
+
 import Numeric.Implicits._
+import scala.reflect.ClassTag
+import scala.util.Try
 
 trait Matrix[A]{
   def rows: Int
@@ -45,7 +51,7 @@ object Matrix{
   def multiply[N : Numeric](x: Matrix[N], y: Matrix[N]): Matrix[N] = x multiplyBy y
   def zipMatrices[A, B](x: Matrix[A], y: Matrix[B]): Matrix[(A, B)] = x zipWithMatrix y
 
-  implicit def matrixNumeric[N : Numeric]: Numeric[Matrix[N]] = new Numeric[Matrix[N]] {
+  implicit def matrixNumeric[N : Numeric : ClassTag]: Numeric[Matrix[N]] = new Numeric[Matrix[N]] {
     override def plus(x: Matrix[N], y: Matrix[N]): Matrix[N] = zipMatrices(x, y).map { case (xs, ys) => xs + ys }
 
     override def minus(x: Matrix[N], y: Matrix[N]): Matrix[N] = x + (-y)
@@ -68,9 +74,15 @@ object Matrix{
     override def toDouble(x: Matrix[N]): Double = ???
 
     override def compare(x: Matrix[N], y: Matrix[N]): Int = ???
+
+    override def parseString(str: String): Option[Matrix[N]] = {
+      val inputStream = new ByteArrayInputStream(str.getBytes)
+      val input = new StreamInput[N](implicitly[Numeric[N]].parseString(_).get, ' ', inputStream)
+      input.produceMatrix
+    }
   }
 
-  implicit def vectorNumeric[N : Numeric]: Numeric[Vector[N]] = new Numeric[Vector[N]] {
+  implicit def vectorNumeric[N : Numeric : ClassTag]: Numeric[Vector[N]] = new Numeric[Vector[N]] {
     override def plus(x: Vector[N], y: Vector[N]): Vector[N] = x.zip(y).map{ case (xs, ys) => xs + ys }
 
     override def minus(x: Vector[N], y: Vector[N]): Vector[N] = x + (-y)
@@ -92,5 +104,7 @@ object Matrix{
     override def toDouble(x: Vector[N]): Double = ???
 
     override def compare(x: Vector[N], y: Vector[N]): Int = ???
+
+    override def parseString(str: String): Option[Vector[N]] = Try(str.split(' ').flatMap(implicitly[Numeric[N]].parseString).toVector).toOption
   }
 }

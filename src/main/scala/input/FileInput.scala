@@ -4,7 +4,9 @@ import java.io.{File, FileInputStream}
 
 import math.Matrix
 
-class FileInput[A](file: File, parseFunc: String => A, sep: Char = ' ') extends MatrixInput[A] {
+import scala.reflect.ClassTag
+
+class FileInput[A](file: File, parseFunc: String => A, sep: Char = ' ')(implicit tag: ClassTag[A]) extends MatrixInput[A] {
   private val reader = new StreamInput[A](parseFunc, sep, new FileInputStream(file))
   override def produceMatrix: Option[Matrix[A]] = reader.produceMatrix
 }

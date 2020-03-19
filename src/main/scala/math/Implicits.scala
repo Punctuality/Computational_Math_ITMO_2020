@@ -4,13 +4,14 @@ import scala.language.postfixOps
 import scala.math._
 import scala.concurrent._
 import scala.concurrent.duration.Duration
+import scala.reflect.ClassTag
 
 object Implicits{
   import Fractional.Implicits._
   import Numeric.Implicits._
   import math.Matrix._
 
-  implicit class RichMatrix[A](matrix: Matrix[A]) {
+  implicit class RichMatrix[A : ClassTag](matrix: Matrix[A]) {
     import ExecutionContext.Implicits.global
 
     def transpose: Matrix[A] = MatrixDense apply matrix.data.transpose
