@@ -4,6 +4,8 @@ import java.util.concurrent.atomic.AtomicReference
 import algorithm.Gauss
 import input.{ConsoleInput, FileInput, RandomInput}
 import math.Matrix
+import math.Matrix._
+import Numeric.Implicits._
 
 import scala.io.StdIn.readLine
 import scala.math._
@@ -40,6 +42,10 @@ object Lab1Main extends App {
         println(s"For matrix:\n$matrix")
         println("Result:")
         answers.foreach{ case (pos, value) => println(s"x_${pos+1} = ${round(value * 100).toDouble / 100}")}
+        println("Error:")
+        matrix.dropCol(matrix.cols - 1).data.map(row => row * answers.map(_._2).toVector)
+        .zip(matrix.getCol(matrix.cols - 1)).map{ case (leftSide, rightSide) => rightSide - leftSide.sum}
+        .zipWithIndex.foreach{ case (error, index) => println(s"${index+1} row: $error")}
     }
     case None         => println("No valid option or matrix was provided")
   }

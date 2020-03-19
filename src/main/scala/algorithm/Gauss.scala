@@ -7,7 +7,11 @@ object Gauss {
   def solveSystem(reprMatrix: Matrix[Double]): Either[String, List[(Int, Double)]] = if (reprMatrix.rows == reprMatrix.cols - 1) {
     val triangle = reprMatrix.triangulate
     if (triangle.getDiagonal.product == 0) {
-      Left("System has no solutions")
+      if (triangle.data.exists(row => row.forall(_ == 0))){
+        Left("System has infinite amount of  solutions")
+      } else {
+        Left("System has no solutions")
+      }
     } else {
       Right apply triangle.data.map{ row =>
         val shortenRow = row.dropWhile(_ == 0).toList
