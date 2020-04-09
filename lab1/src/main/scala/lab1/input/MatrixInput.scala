@@ -1,6 +1,6 @@
-package input
+package lab1.input
 
-import math.Matrix
+import lab1.math.Matrix
 
 trait MatrixInput[A]{
   def produceMatrix: Option[Matrix[A]]

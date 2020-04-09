@@ -1,10 +1,10 @@
-package math
+package lab1.math
 
 import java.io.ByteArrayInputStream
 
-import input.StreamInput
+import lab1.input.StreamInput
 
-import Numeric.Implicits._
+import scala.Numeric.Implicits._
 import scala.reflect.ClassTag
 import scala.util.Try
 

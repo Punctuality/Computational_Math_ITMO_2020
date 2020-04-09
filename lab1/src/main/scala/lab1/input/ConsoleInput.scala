@@ -1,12 +1,13 @@
-package input
-import math.Matrix
+package lab1.input
+
+import lab1.math.Matrix
 
 import scala.reflect.ClassTag
 
 class ConsoleInput[A](parseFunc: String => A, sep: Char = ' ')(implicit tag: ClassTag[A]) extends MatrixInput[A] {
   private val reader = new StreamInput[A](parseFunc, sep, System.in)
   override def produceMatrix: Option[Matrix[A]] = {
-    println(s"Input dimensions (rows cols), then (row by row) input matrix values (sep = '$sep'):")
+    println(s"Input dimensions (rows cols), then (row by row) lab1.input matrix values (sep = '$sep'):")
     reader.produceMatrix
   }
 }

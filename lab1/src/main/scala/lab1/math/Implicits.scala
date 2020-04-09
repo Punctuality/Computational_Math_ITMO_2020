@@ -1,15 +1,15 @@
-package math
+package lab1.math
 
-import scala.language.postfixOps
-import scala.math._
-import scala.concurrent._
 import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.math.{Fractional, Numeric, min, pow}
 import scala.reflect.ClassTag
+
+import lab1.math.Matrix._
 
 object Implicits{
   import Fractional.Implicits._
   import Numeric.Implicits._
-  import math.Matrix._
 
   implicit class RichMatrix[A : ClassTag](matrix: Matrix[A]) {
     import ExecutionContext.Implicits.global

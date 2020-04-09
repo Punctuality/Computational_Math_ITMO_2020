@@ -1,8 +1,8 @@
-package input
+package lab1.input
 
 import java.io.{File, FileInputStream}
 
-import math.Matrix
+import lab1.math.Matrix
 
 import scala.reflect.ClassTag
 

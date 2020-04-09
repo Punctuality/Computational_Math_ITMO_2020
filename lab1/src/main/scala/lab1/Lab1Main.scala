@@ -1,14 +1,16 @@
+package lab1
+
 import java.io.File
 import java.util.concurrent.atomic.AtomicReference
 
-import algorithm.Gauss
-import input.{ConsoleInput, FileInput, RandomInput}
-import math.Matrix
-import math.Matrix._
+import lab1.algorithm.Gauss
+import lab1.input.{ConsoleInput, FileInput, RandomInput}
+import lab1.math.Matrix
+import lab1.math.Matrix._
 import Numeric.Implicits._
 
 import scala.io.StdIn.readLine
-import scala.math._
+import scala.math.round
 
 object Lab1Main extends App {
   val retrievedMatrix = new AtomicReference[Option[Matrix[Double]]](None)

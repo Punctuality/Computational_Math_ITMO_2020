@@ -1,4 +1,4 @@
-package math
+package lab1.math
 
 import scala.Numeric.Implicits._
 

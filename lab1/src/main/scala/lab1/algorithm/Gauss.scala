@@ -1,7 +1,8 @@
-package algorithm
+package lab1.algorithm
 
-import math.Matrix
-import math.Implicits._
+import lab1.math.Matrix
+
+import lab1.math.Implicits._
 
 object Gauss {
   def solveSystem(reprMatrix: Matrix[Double]): Either[String, List[(Int, Double)]] = if (reprMatrix.rows == reprMatrix.cols - 1) {

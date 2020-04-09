@@ -1,9 +1,9 @@
-package input
+package lab1.input
 
 import java.io.InputStream
 import java.util.Scanner
 
-import math.{Matrix, MatrixDense}
+import lab1.math.{MatrixDense, Matrix}
 
 import scala.reflect.ClassTag
 import scala.util.Try

@@ -1,6 +1,6 @@
-package input
+package lab1.input
 
-import math.{Matrix, MatrixDense}
+import lab1.math.{Matrix, MatrixDense}
 
 import scala.util.Random
 
