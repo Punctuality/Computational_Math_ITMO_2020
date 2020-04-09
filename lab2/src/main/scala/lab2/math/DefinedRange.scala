@@ -11,6 +11,8 @@ case class DefinedRange[T: Fractional](start: T, stop: T){
     val length = start - stop
     if (length > implicitly[Numeric[T]].fromInt(0)) length else -length
   }
+
+  def sorted: DefinedRange[T] = if (stop < start) DefinedRange(stop, start) else this
 }
 
 object DefinedRange{

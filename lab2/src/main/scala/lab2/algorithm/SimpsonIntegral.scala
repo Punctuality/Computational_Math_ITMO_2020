@@ -6,15 +6,26 @@ import scala.math._
 
 class SimpsonIntegral(function: DefinedFunction[Double]) {
 
-  private val eps = 0.00001
+  private val eps: Double = Double.MinPositiveValue * 2.0
 
-  def result(range: DefinedRange[Double], accuracy: Double): Either[IntegrateError, Double] = for {
-    nSections <- countSections(range, accuracy)
-    _ = println(s"Sections: $nSections")
-    result <- integrate(range, nSections)
-  } yield result
+  def result(range: DefinedRange[Double], accuracy: Double): Either[IntegrateError, (Double, Double, Int)] =
+    Either.cond(
+      function.definedOnRange.exists{case DefinedRange(start, stop) => start <= range.start && range.stop <= stop},
+      integrate_cycle(range, countSections(range, accuracy), accuracy) ,
+      OutOfRangeBounds(range)
+    ).joinRight
 
-  def integrate(range: DefinedRange[Double], nSections: Int): Either[IntegrateError, Double] =
+  private def integrate_cycle(range: DefinedRange[Double], nSections: Int, accuracy: Double): Either[IntegrateError, (Double, Double, Int)] = for {
+      normalPrecision <- integrate(range, nSections)
+      doubledPrecision <- integrate(range, 2 * nSections)
+      result <- if (abs(doubledPrecision - normalPrecision) / 15 > accuracy) {
+        integrate_cycle(range, 2 * nSections, accuracy)
+      } else {
+        Right(normalPrecision, doubledPrecision - normalPrecision, nSections)
+      }
+    } yield result
+
+  private def integrate(range: DefinedRange[Double], nSections: Int): Either[IntegrateError, Double] =
     function.excludedPoints.collectFirst{
       case bp@SecondOrderPoint(point) if range.contains(point) => SecondOrderBreakPointError(bp)
     }.toLeft{
@@ -27,7 +38,7 @@ class SimpsonIntegral(function: DefinedFunction[Double]) {
       }._2 match {
         case DefinedRange(start, stop) :: Nil =>
           val step = (stop - start) / (nSections - nSections % 2 + 1)
-          val xs = LazyList.iterate(start)(_ + step).take(nSections - nSections % 2 + 1).iterator
+          val xs = LazyList.iterate(start + eps)(_ + step).take(nSections - nSections % 2 + 1).iterator
           Right apply xs.sliding(3, 2).map(_.map(function).toList).map{
             case yPrev :: yMid :: yNext :: Nil => yPrev + (4 * yMid) + yNext
           }.sum * step / 3.0
@@ -35,13 +46,15 @@ class SimpsonIntegral(function: DefinedFunction[Double]) {
       }
     }.joinRight
 
-  def countSections(range: DefinedRange[Double], accuracy: Double): Either[IntegrateError, Int] =
+  private def countSections(range: DefinedRange[Double], accuracy: Double): Int =
     function.derivatives.get(4).toRight(
       NoProperDerivative(4)
-    ).map(derivative =>
-      (
-        (pow(range.length, 5) * abs(derivative.maxValue(range))) /
-          (abs(accuracy) * 180) + 1
-      ).toInt
-    )
+    ).flatMap( derivative =>
+      derivative.excludedPoints.collectFirst{
+        case bp@SecondOrderPoint(point) if range.contains(point) => bp
+      }.map(SecondOrderBreakPointError.apply).toLeft(
+        ((pow(range.length, 5) * abs(derivative.maxValue(range))) /
+            (abs(accuracy) * 180) + 1).toInt
+      )
+    ).map(n => if (n < 3) 3 else if (n > 10_000_000) 10_000_000 else n).getOrElse(3)
 }
