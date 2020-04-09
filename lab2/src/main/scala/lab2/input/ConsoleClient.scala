@@ -78,6 +78,7 @@ class ConsoleClient{
       case "help" => help()
       case "integrate" => integrate()
       case "end" => end()
+      case _ => help()
     }
     if (endFlag.get()) () else startAskingLoop()
   }

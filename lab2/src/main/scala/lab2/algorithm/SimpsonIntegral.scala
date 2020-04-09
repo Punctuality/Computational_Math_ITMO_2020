@@ -1,7 +1,6 @@
 package lab2.algorithm
 
 import lab2.math._
-
 import scala.math._
 
 class SimpsonIntegral(function: DefinedFunction[Double]) {
@@ -18,10 +17,10 @@ class SimpsonIntegral(function: DefinedFunction[Double]) {
   private def integrate_cycle(range: DefinedRange[Double], nSections: Int, accuracy: Double): Either[IntegrateError, (Double, Double, Int)] = for {
       normalPrecision <- integrate(range, nSections)
       doubledPrecision <- integrate(range, 2 * nSections)
-      result <- if (abs(doubledPrecision - normalPrecision) / 15 > accuracy) {
+      result <- if (abs(doubledPrecision - normalPrecision) > accuracy) {
         integrate_cycle(range, 2 * nSections, accuracy)
       } else {
-        Right(normalPrecision, doubledPrecision - normalPrecision, nSections)
+        Right(doubledPrecision, doubledPrecision - normalPrecision, nSections)
       }
     } yield result
 
@@ -54,7 +53,7 @@ class SimpsonIntegral(function: DefinedFunction[Double]) {
         case bp@SecondOrderPoint(point) if range.contains(point) => bp
       }.map(SecondOrderBreakPointError.apply).toLeft(
         ((pow(range.length, 5) * abs(derivative.maxValue(range))) /
-            (abs(accuracy) * 180) + 1).toInt
+            (abs(accuracy) * 180.0) + 1.0).toInt
       )
     ).map(n => if (n < 3) 3 else if (n > 10_000_000) 10_000_000 else n).getOrElse(3)
 }
