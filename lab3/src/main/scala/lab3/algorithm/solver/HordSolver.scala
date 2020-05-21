@@ -34,7 +34,7 @@ case class HordSolver[A: Fractional, F[_] : Monad](accuracy: A, iterationsLimit:
         case _                                                     => None
       }.flatMap{
         case None                             => Option.empty[(Int, A, A)].pure[F]
-        case Some(Left(result))               => (iteration + 1, result, if (iteration < 1) result else xPrev.getOrElse(leftBound)).some.pure[F]
+        case Some(Left(result))               => (iteration + 1, result, if (iteration < 10) result else xPrev.getOrElse(leftBound)).some.pure[F]
         case Some(Right((left, right, xNow))) => solver(f, left, right, Some(xNow), iteration + 1)
       }
 

@@ -20,7 +20,7 @@ trait FunctionParser {
     }
   )
 
-  def parserExpression[A: Numeric, B: FromDouble, F[_]: Applicative](expression: String)(values: Map[String, A]): F[B] = {
+  def parseExpression[A: Numeric, B: FromDouble, F[_]: Applicative](expression: String)(values: Map[String, A]): F[B] = {
     val parser = parsersCache.get(expression)
     parser.getSymbolTable.clearNonConstants()
     values.toList.foreach{ case (varName, varVal) => parser.addVariable(varName, varVal.toDouble) }
@@ -29,5 +29,5 @@ trait FunctionParser {
   }.pure[F]
 
   def parseExpressionByX[A: Numeric, B: FromDouble, F[_]: Applicative](expression: String): A => F[B] =
-    aVal => parserExpression(expression)(Map("x" -> aVal))
+    aVal => parseExpression(expression)(Map("x" -> aVal))
 }

@@ -7,16 +7,16 @@ import lab1.math.Implicits._
 object Gauss {
   def solveSystem(reprMatrix: Matrix[Double]): Either[String, List[(Int, Double)]] = if (reprMatrix.rows == reprMatrix.cols - 1) {
     val triangle = reprMatrix.triangulate
-    println(s"Triangulated matrix:\n$triangle")
-    if (triangle.getDiagonal.product == 0) {
-      if (triangle.data.exists(row => row.forall(_ == 0))){
+//    println(s"Triangulated matrix:\n$triangle")
+    if (triangle.getDiagonal.product.abs <= 1e-6) {
+      if (triangle.data.exists(row => row.forall(_.abs <= 1e-6))){
         Left("System has infinite amount of  solutions")
       } else {
         Left("System has no solutions")
       }
     } else {
       Right apply triangle.data.map{ row =>
-        val shortenRow = row.dropWhile(_ == 0).toList
+        val shortenRow = row.dropWhile(_.abs <= 1e-6).toList
         shortenRow.map(_ / shortenRow.head)
       }.foldRight(List.empty[Double]){
         case (row, answers) => (row.last - (row.init.tail zip answers).map{ case (a, b) => a * b }.sum) +: answers

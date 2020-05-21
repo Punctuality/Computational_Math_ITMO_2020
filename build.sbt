@@ -51,4 +51,7 @@ lazy val `compmath-lab3` = (project in file("lab3"))
       "com.github.blemale" %% "scaffeine" % "3.1.0" % "compile"
     )
   )
-  .dependsOn(`compmath-core`)
+  .dependsOn(
+    `compmath-core`,
+    `compmath-lab1`
+  )

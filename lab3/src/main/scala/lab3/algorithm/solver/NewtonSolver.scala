@@ -13,8 +13,6 @@ case class NewtonSolver[A: Fractional, F[_] : Monad](accuracy: A, iterationsLimi
   private val forced: Int = iterationsForced.toInt
   require(limit > 1 && forced > 1 && limit > forced)
 
-  private val zero: A = implicitly[Fractional[A]].fromInt(0)
-
   private def computeDerivative(f: A => A, point: A, epsilon: A): A = (f(point + epsilon) - f(point)) / epsilon
 
   private def isIn(point: A, left: A, right: A): Boolean = (left <= point) && (point <= right)
@@ -35,7 +33,7 @@ case class NewtonSolver[A: Fractional, F[_] : Monad](accuracy: A, iterationsLimi
         case _                                             => None
       }.flatMap{
         case None               => Option.empty[(Int, A, A)].pure[F]
-        case Some(Left(result)) => (iteration + 1,  result, if (iteration < 1) result else xPrev.getOrElse(leftBound)).some.pure[F]
+        case Some(Left(result)) => (iteration + 1,  result, if (iteration < 10) result else xPrev.getOrElse(leftBound)).some.pure[F]
         case Some(Right(xNow))  => solver(f, leftBound, rightBound, Some(xNow), iteration + 1)
       }
 

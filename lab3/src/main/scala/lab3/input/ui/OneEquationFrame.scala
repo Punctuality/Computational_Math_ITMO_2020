@@ -33,9 +33,17 @@ class OneEquationFrame extends JFrame with FunctionParser {
   )
 
   private val calcButton = new JButton("CALC")
+  private val exitButton = new JButton("CLOSE")
+  private val buttonPanel = new JPanel(new GridLayout(2, 1))
+  buttonPanel.add(calcButton)
+  buttonPanel.add(exitButton)
 
   calcButton.addActionListener { _ =>
     calculate()
+  }
+
+  exitButton.addActionListener {_ =>
+    this.setVisible(false)
   }
 
   private val constraints = new GridBagConstraints()
@@ -56,17 +64,17 @@ class OneEquationFrame extends JFrame with FunctionParser {
 
   this.setSize(1000, 600)
   this.setResizable(false)
-  this.setVisible(true)
+  this.setVisible(false)
 
 
   def calculate(): Unit = {
 
     val acc = accField.getValue.toDouble
-    val iterations = if (iterField.getValue.isEmpty ||iterField.getValue.toInt == 0) 1000 else if (iterField.getValue.toInt < 21) 21 else iterField.getValue.toInt
+    val iterations = if (iterField.getValue.isEmpty ||iterField.getValue.toInt == 0) 1000 else iterField.getValue.toInt
 
     val (left, right) = (leftField.getValue.toDouble, rightField.getValue.toDouble)
 
-    val separator = new TabularSeparator[Double, Double, Eval](acc)
+    val separator = new TabularSeparator[Double, Double, Eval]((right - left) / iterations)
     val solver = methodChoice.getSelectedChoice match {
       case Some((0, _)) => new HordSolver[Double, Eval](acc, iterations, 20)
       case Some((1, _)) => new NewtonSolver[Double, Eval](acc, iterations, 20)
