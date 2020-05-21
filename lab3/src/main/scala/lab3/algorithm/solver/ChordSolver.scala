@@ -3,7 +3,6 @@ package lab3.algorithm.solver
 import cats._
 import cats.implicits._
 
-import scala.annotation.tailrec
 import scala.math.Fractional.Implicits._
 import scala.math.Ordering.Implicits._
 

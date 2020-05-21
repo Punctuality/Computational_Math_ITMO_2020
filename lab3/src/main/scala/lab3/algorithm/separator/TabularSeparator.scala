@@ -1,8 +1,6 @@
 package lab3.algorithm.separator
 
 import cats._
-import cats.effect.Sync
-import cats.implicits._
 
 import scala.annotation.tailrec
 import scala.math.Fractional.Implicits._
@@ -28,5 +26,4 @@ case class TabularSeparator[A: Fractional, B: Fractional, F[_]: Applicative](acc
 
   override def separateSolutions(f: A => B, leftBound: A, rightBound: A): F[Result] =
     Applicative[F] pure separator(f, leftBound, rightBound)
-
 }

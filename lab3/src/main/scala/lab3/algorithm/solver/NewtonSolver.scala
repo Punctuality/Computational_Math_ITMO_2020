@@ -39,5 +39,4 @@ case class NewtonSolver[A: Fractional, F[_] : Monad](accuracy: A, iterationsLimi
 
   override def findSolution(f: A => A, leftBound: A, rightBound: A): F[Option[(Int, A, A)]] =
     solver(f, leftBound, rightBound, None, 0)
-
 }

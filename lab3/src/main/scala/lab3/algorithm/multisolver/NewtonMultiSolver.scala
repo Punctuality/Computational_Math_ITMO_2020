@@ -2,12 +2,12 @@ package lab3.algorithm.multisolver
 
 import cats.{Applicative, Monad}
 import lab1.algorithm.Gauss
-import lab1.math.MatrixDense
 import lab1.math.Matrix._
-import lab3.algorithm.solver.EquationSolver
+import lab1.math.MatrixDense
 import lab3.math.FromDouble
 import lab3.math.FromDouble.Implicits._
 
+import scala.math._
 import scala.math.Fractional.Implicits._
 import scala.math.Ordering.Implicits._
 import scala.reflect.ClassTag
@@ -17,9 +17,10 @@ class NewtonMultiSolver[A: Fractional: FromDouble, F[_] : Monad](accuracy: A, it
   extends MultiEquationSolver[A, F] {
 
   private val limit: Int = iterationsLimit.toInt
+  private val epsilon: A = pow(accuracy.toDouble, -1).fromDoubleTo[A]
 
   private def computeJacobian(func: List[A] => List[A], x: List[A])(implicit ctg: ClassTag[A]): Array[Array[A]] = {
-    val EPS = 1E-5.fromDoubleTo[A]
+    val EPS = epsilon
     val d1 = func.apply(x)
     val J: Array[Array[A]] = new Array[Array[A]](d1.length).map(_ => new Array[A](x.length))
     for (i <- d1.indices) {
