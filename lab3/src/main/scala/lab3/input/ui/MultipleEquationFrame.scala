@@ -94,9 +94,8 @@ class MultipleEquationFrame extends JFrame with FunctionParser {
     val acc = accField.getValue.toDouble
     val iterations = if (iterField.getValue.isEmpty || iterField.getValue.toInt == 0) 1000 else if (iterField.getValue.toInt < 21) 21 else iterField.getValue.toInt
 
-    val (startX, startY) = (startXField.getValue.toDouble, startYField.getValue.toDouble) // TODO
+    val (startX, startY) = (startXField.getValue.toDouble, startYField.getValue.toDouble)
 
-    // Not the same check TODO
     if (firstEq.getSelectedChoice.get._1 != secondEq.getSelectedChoice.get._1){
       val func1: ((Double, Double) => Double, Double => Double) = functions(firstEq.getSelectedChoice.get._1)
       val func2: ((Double, Double) => Double, Double => Double) = functions(secondEq.getSelectedChoice.get._1)
