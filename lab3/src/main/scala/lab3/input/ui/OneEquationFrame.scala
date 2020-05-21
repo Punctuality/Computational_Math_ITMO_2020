@@ -6,7 +6,7 @@ import cats.Eval
 import javafx.application.Platform
 import javax.swing.{JButton, JFrame, JPanel}
 import lab3.algorithm.separator.TabularSeparator
-import lab3.algorithm.solver.{HordSolver, NewtonSolver}
+import lab3.algorithm.solver.{ChordSolver, NewtonSolver}
 import lab3.input.FunctionParser
 import lab3.input.ui.components.{ChoiceGroup, JGraph, TextEntryField}
 import lab3.math.FromDouble.Instances._
@@ -15,7 +15,7 @@ import scala.math._
 
 class OneEquationFrame extends JFrame with FunctionParser {
   private val graph: JGraph = new JGraph("lab3/css/lineChart.css").init(800 -> 400)
-  private val methodChoice: ChoiceGroup = new ChoiceGroup(List("Hord", "Tangent"), 1, "")
+  private val methodChoice: ChoiceGroup = new ChoiceGroup(List("Chord", "Tangent"), 1, "")
 
   private val funcField = new TextEntryField("F(x) = ", "sin(x)", false)
   private val iterField = new TextEntryField("iterations = ", "1000", false)
@@ -60,7 +60,7 @@ class OneEquationFrame extends JFrame with FunctionParser {
   this.add(valuesPanel, constraints)
 
   constraints.gridx = 1; constraints.gridy = 1; constraints.weightx = 0.2
-  this.add(calcButton, constraints)
+  this.add(buttonPanel, constraints)
 
   this.setSize(1000, 600)
   this.setResizable(false)
@@ -76,7 +76,7 @@ class OneEquationFrame extends JFrame with FunctionParser {
 
     val separator = new TabularSeparator[Double, Double, Eval]((right - left) / iterations)
     val solver = methodChoice.getSelectedChoice match {
-      case Some((0, _)) => new HordSolver[Double, Eval](acc, iterations, 20)
+      case Some((0, _)) => new ChordSolver[Double, Eval](acc, iterations, 20)
       case Some((1, _)) => new NewtonSolver[Double, Eval](acc, iterations, 20)
     }
 
@@ -99,7 +99,7 @@ class OneEquationFrame extends JFrame with FunctionParser {
     resYField.setValue(solutions.map(_._2).map(func).map(rounding).mkString(" "))
     errorField.setValue(solutions.map(r => abs(r._3 - r._2)).map(rounding).mkString(" "))
 
-    val Xs: List[Double] = Stream.iterate(left)(x => (right-left) / 500.0 + x).takeWhile(_ < right).toList
+    val Xs: List[Double] = LazyList.iterate(left)(x => (right-left) / 500.0 + x).takeWhile(_ < right).toList
 
     Platform.runLater{
       () =>

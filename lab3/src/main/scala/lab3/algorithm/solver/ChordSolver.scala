@@ -8,7 +8,7 @@ import scala.math.Fractional.Implicits._
 import scala.math.Ordering.Implicits._
 
 // TODO Replace F[Option[A]] with OptionT[F, A]
-case class HordSolver[A: Fractional, F[_] : Monad](accuracy: A, iterationsLimit: A, iterationsForced: A) extends EquationSolver[A, A, F] {
+case class ChordSolver[A: Fractional, F[_] : Monad](accuracy: A, iterationsLimit: A, iterationsForced: A) extends EquationSolver[A, A, F] {
 
   private val limit: Int = iterationsLimit.toInt
   private val forced: Int = iterationsForced.toInt
