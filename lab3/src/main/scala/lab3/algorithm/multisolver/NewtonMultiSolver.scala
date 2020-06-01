@@ -1,11 +1,11 @@
 package lab3.algorithm.multisolver
 
 import cats.{Applicative, Monad}
+import core.math.FromDouble
 import lab1.algorithm.Gauss
 import lab1.math.Matrix._
 import lab1.math.MatrixDense
-import lab3.math.FromDouble
-import lab3.math.FromDouble.Implicits._
+import core.math.FromDouble.Implicits._
 
 import scala.math._
 import scala.math.Fractional.Implicits._

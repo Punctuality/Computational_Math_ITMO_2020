@@ -1,5 +1,4 @@
-package lab3.input.ui.components
-
+package core.input.ui.components
 
 import java.awt.{GridBagConstraints, GridBagLayout, GridLayout}
 

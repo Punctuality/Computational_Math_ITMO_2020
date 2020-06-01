@@ -1,4 +1,4 @@
-package lab3.math
+package core.math
 
 trait FromDouble[B] {
   def fromDouble(double: Double): B
