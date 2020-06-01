@@ -1,4 +1,4 @@
-# Computational Math - ITMO University 2020 <img src="https://design-system.itmo.ru/img/logos/logo-en.png" alt="ITMO" width="112">
+# Computational Math - ITMO University 2020 <img src="https://design-system.itmo.ru/img/logos/logo-horizontal-inverted-en.png" alt="ITMO" width="200">
 
 > “Curiouser and curiouser!” - Alice in Wonderland
 
