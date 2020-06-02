@@ -18,8 +18,10 @@ class SplineInterpolator[A: Fractional: FromDouble: ClassTag, F[_] : Monad] exte
   }
 
   private def cubicSpline(splines: Seq[((A, A), A => A)]): A => A = {
-    case x if x < splines.head._1._1 => splines.head._2(x) // x is smaller than a (extrapolation)
-    case x if x > splines.last._1._2 => splines.last._2(x) // x is bigger than b  (extrapolation)
+    case x if x < splines.head._1._1 =>
+      splines.head._2(x) // x is smaller than a (extrapolation)
+    case x if x > splines.last._1._2 =>
+      splines.last._2(x) // x is bigger than b  (extrapolation)
     case x => splines                                      // x is inside [a, b]  (interpolation)
       .find{ case ((xPrev, xNext), _) => (xPrev <= x) && (x <= xNext) }.get._2(x)
   }
@@ -43,7 +45,6 @@ class SplineInterpolator[A: Fractional: FromDouble: ClassTag, F[_] : Monad] exte
         val z:  Array[A] = Array.fill(n+1)(0.fromDoubleTo[A])
 
         Range.inclusive(1, n - 1).foreach{ i =>
-          println(i, z.length, mu.length, hs.length, xs.length)
           l(i) = 2.fromDoubleTo[A] * (xs(i + 1) - xs(i - 1)) - hs(i - 1) * mu(i - 1)
           mu(i) = hs(i) / l(i)
           z(i) = (alphas(i-1) - hs(i - 1) * z(i - 1)) / l(i)
@@ -64,8 +65,6 @@ class SplineInterpolator[A: Fractional: FromDouble: ClassTag, F[_] : Monad] exte
           xs.indices.dropRight(1)
             .map(i => (xs(i), xs(i + 1)) -> cubicFunc(xs(i), as(i), bs(i), cs(i), ds(i)))
             .sortBy(_._1._1)
-
-
 
         Some apply cubicSpline(splines)
       case None => None
