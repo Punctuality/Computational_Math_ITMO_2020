@@ -1,13 +1,13 @@
-package lab3.input
+package core.input
 
 import cats.Applicative
 import cats.syntax.applicative._
 import com.github.blemale.scaffeine.{LoadingCache, Scaffeine}
-import lab3.math.FromDouble
-import lab3.math.FromDouble.Implicits._
+import core.math.FromDouble
+import core.math.FromDouble.Implicits._
 import org.nfunk.jep.JEP
 
-import scala.math.Numeric.Implicits._
+import scala.Numeric.Implicits._
 
 trait FunctionParser {
 

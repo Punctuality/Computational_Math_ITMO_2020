@@ -1,7 +1,7 @@
 package lab3
 
-import lab3.input.FunctionParser
-import lab3.input.ui.{ControllerFrame, MultipleEquationFrame}
+import core.input.FunctionParser
+import lab3.input.ui.ControllerFrame
 
 object Lab3Main extends App with FunctionParser {
 

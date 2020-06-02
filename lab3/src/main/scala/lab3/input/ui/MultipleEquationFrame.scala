@@ -3,12 +3,12 @@ package lab3.input.ui
 import java.awt.{GridBagConstraints, GridBagLayout, GridLayout}
 
 import cats.Eval
+import core.input.FunctionParser
+import core.input.ui.components.{ChoiceGroup, JGraph, TextEntryField}
 import javafx.application.Platform
 import javax.swing.{JButton, JFrame, JPanel}
 import lab3.algorithm.multisolver.NewtonMultiSolver
-import lab3.input.FunctionParser
-import lab3.input.ui.components.{ChoiceGroup, JGraph, TextEntryField}
-import lab3.math.FromDouble.Instances._
+import core.math.FromDouble.Instances._
 
 import scala.math._
 

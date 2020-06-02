@@ -1,6 +1,7 @@
-ThisBuild / scalaVersion := "2.13.1"
-ThisBuild / version := "0.1.0"
+import sbt.Keys.mainClass
 
+ThisBuild / scalaVersion := "2.13.1"
+ThisBuild / version := "0.4.0"
 
 ThisBuild / scalacOptions ++= Seq(
   "-deprecation",
@@ -15,35 +16,16 @@ ThisBuild / scalacOptions ++= Seq(
 )
 
 lazy val `compmath` = (project in file(".")) aggregate(
-  `compmath-core`,
-  `compmath-lab1`,
-  `compmath-lab2`,
-  `compmath-lab3`
+  core,
+  lab1,
+  lab2,
+  lab3,
+  lab4
 )
 
-lazy val `compmath-core` = (project in file("core"))
+lazy val core = (project in file("core"))
   .settings(
     name := "core",
-    libraryDependencies ++= Seq()
-  )
-
-lazy val `compmath-lab1` = (project in file("lab1"))
-  .settings(
-    name := "lab1",
-    libraryDependencies ++= Seq()
-  )
-  .dependsOn(`compmath-core`)
-
-lazy val `compmath-lab2` = (project in file("lab2"))
-  .settings(
-    name := "lab2",
-    libraryDependencies ++= Seq()
-  )
-  .dependsOn(`compmath-core`)
-
-lazy val `compmath-lab3` = (project in file("lab3"))
-  .settings(
-    name := "lab3",
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-core" % "2.0.0",
       "org.typelevel" %% "cats-effect" % "2.0.0",
@@ -51,7 +33,38 @@ lazy val `compmath-lab3` = (project in file("lab3"))
       "com.github.blemale" %% "scaffeine" % "3.1.0" % "compile"
     )
   )
+
+lazy val lab1 = (project in file("lab1"))
+  .settings(
+    name := "lab1",
+    libraryDependencies ++= Seq()
+  )
+  .dependsOn(core)
+
+lazy val lab2 = (project in file("lab2"))
+  .settings(
+    name := "lab2",
+    libraryDependencies ++= Seq()
+  )
+  .dependsOn(core)
+
+lazy val lab3 = (project in file("lab3"))
+  .settings(
+    name := "lab3",
+    mainClass in assembly := Some("lab3.Lab3Main"),
+    assemblyJarName in assembly := "lab3.jar"
+  )
   .dependsOn(
-    `compmath-core`,
-    `compmath-lab1`
+    core,
+    lab1
+  )
+
+lazy val lab4 = (project in file("lab4"))
+  .settings(
+    name := "lab4",
+    mainClass in assembly := Some("lab4.Lab4Main"),
+    assemblyJarName in assembly := "lab4.jar"
+  )
+  .dependsOn(
+    core
   )
