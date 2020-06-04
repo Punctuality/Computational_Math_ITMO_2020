@@ -20,7 +20,8 @@ lazy val `compmath` = (project in file(".")) aggregate(
   lab1,
   lab2,
   lab3,
-  lab4
+  lab4,
+  lab5
 )
 
 lazy val core = (project in file("core"))
@@ -67,4 +68,16 @@ lazy val lab4 = (project in file("lab4"))
   )
   .dependsOn(
     core
+  )
+
+lazy val lab5 = (project in file("lab5"))
+  .settings(
+    name := "lab5",
+    mainClass in assembly := Some("lab5.Lab5Main"),
+    assemblyJarName in assembly := "lab5.jar"
+  )
+  .dependsOn(
+    core,
+    lab2,
+    lab4
   )
